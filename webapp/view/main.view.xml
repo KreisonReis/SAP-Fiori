@@ -1,0 +1,84 @@
+<mvc:View controllerName="projetoteste.controller.main"
+    xmlns:mvc="sap.ui.core.mvc" 
+    displayBlock="true"
+    xmlns="sap.m"
+    >
+    <Shell>
+        <App>
+            <pages>
+                <Page id="page" title="{i18n>homePageTitle}">
+                    <content>
+                        <Panel headerText="{i18n>helloPanelTitle}">
+                            <content>
+                                <Button 
+                                    icon="sap-icon://account"
+                                    text="{i18n>showHelloButtonText}" 
+                                    press=".onShowHello" 
+                                />
+                                <Input 
+                                    value="{/recipient/name}"
+                                    description="Hello {/recipient/name}"
+                                    valueLiveUpdate="true"
+                                    width="60%"
+                                />
+                                
+                                <Table 
+                                    id="invoiceList"
+                                    class="sapUiResponsiveMargin"
+                                    width="auto"
+                                    items="{
+                                        path: 'invoice>/Invoices',
+                                        sorter: { 
+                                            path: 'ProductName',
+                                            group: true,
+                                            descendending: true
+                                        }
+                                    }"
+                                >
+                                    <headerToolbar>
+                                        <Toolbar>
+                                            <Title text="Faturas" />
+                                            <ToolbarSpacer/>
+                                            <SearchField width="30%" search=".onFilterInvoices"  />
+                                        </Toolbar>
+                                    </headerToolbar>
+
+                                    <columns>
+										<Column hAlign="End" minScreenWidth="Small" demandPopin="true" width="10em">
+											<Text text="Quantidade"/>
+										</Column>
+										<Column>
+											<Text text="Nome"/>
+										</Column>
+										<Column minScreenWidth="Small" demandPopin="true">
+											<Text text="Status"/>
+										</Column>
+										<Column minScreenWidth="Tablet" demandPopin="false">
+											<Text text="Fornecedor"/>
+										</Column>
+										<Column hAlign="End">
+											<Text text="Preço"/>
+										</Column>
+									</columns>
+
+                                    <items>
+										<ColumnListItem>
+											<cells>
+												<ObjectNumber number="{invoice>Quantity}" emphasized="false"/>
+												<ObjectIdentifier title="{invoice>ProductName}"/>
+												<Text text="{ path: 'invoice>Status', formatter: '.statusText' }"/>
+												<Text text="{invoice>ShipperName}"/>
+												<ObjectNumber number="{ parts: [{path: 'invoice>ExtendedPrice'}, 'EUR' ], type: 'sap.ui.model.type.Currency' }" unit="EUR"
+													state="{= ${invoice>ExtendedPrice} > 50 ? 'Error' : 'Success' }"/>
+											</cells>
+										</ColumnListItem>
+									</items>
+                                </Table> 
+                            </content>
+                        </Panel>
+                    </content>
+                </Page>
+            </pages>
+        </App>  
+    </Shell>
+</mvc:View>
